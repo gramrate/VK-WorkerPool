@@ -50,7 +50,7 @@ p.Submit("Hello world!")
 
 ```go
 if err := p.RemoveWorker(); err != nil {
-panic(err)
+    panic(err)
 }
 ```
 
