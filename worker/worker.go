@@ -1,3 +1,8 @@
+/*
+Package worker предоставляет реализацию отдельного воркера.
+
+Воркеры получают задания через канал и обрабатывают их.
+*/
 package worker
 
 import (
@@ -5,13 +10,15 @@ import (
 	"sync"
 )
 
+// Worker представляет воркера.
 type Worker struct {
-	ID      int
-	StopCh  chan struct{}
-	WG      *sync.WaitGroup
-	JobChan <-chan string
+	ID      int             // Уникальный идентификатор воркера.
+	StopCh  chan struct{}   // Канал для остановки воркера.
+	WG      *sync.WaitGroup // Счётчик для ожидания завершения воркера.
+	JobChan <-chan string   // Канал для получения заданий.
 }
 
+// Start запускает обработку заданий в отдельной горутине.
 func (w *Worker) Start() {
 	go func() {
 		defer w.WG.Done()
@@ -28,6 +35,7 @@ func (w *Worker) Start() {
 	}()
 }
 
+// Stop останавливает воркера.
 func (w *Worker) Stop() {
 	close(w.StopCh)
 }
